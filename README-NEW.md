@@ -68,5 +68,3 @@ OmniCart is a modern ecommerce platform built for clean product discovery, fast 
 ## Overview
 
 OmniCart is designed as a clean ecommerce base that can grow into a full shopping platform with cart persistence, checkout, order management, admin controls, and richer inventory flows. It is structured for local development first and can be connected to hosted infrastructure later without changing the overall app architecture.
-
-

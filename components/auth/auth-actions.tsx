@@ -37,9 +37,6 @@ export function AuthActions({ googleEnabled, mode }: AuthActionsProps) {
             <p className="text-base font-semibold text-slate-950">
               {mode === "signup" ? "Sign up with Google" : "Continue with Google"}
             </p>
-            <p className="text-sm text-slate-500">
-              Secure Google OAuth for customer access and protected sessions
-            </p>
           </div>
         </div>
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -51,8 +48,7 @@ export function AuthActions({ googleEnabled, mode }: AuthActionsProps) {
         <div className="rounded-[28px] border border-amber-200 bg-amber-50 p-5">
           <p className="text-sm font-semibold text-slate-950">Google setup required</p>
           <p className="mt-1 text-sm leading-7 text-slate-600">
-            Add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env.local` to activate login
-            and signup.
+            Add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env.local` to enable sign-in.
           </p>
         </div>
       ) : null}

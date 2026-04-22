@@ -37,9 +37,6 @@ export function OmniCartLogo({
       {withWordmark ? (
         <span className="flex flex-col">
           <span className="text-lg font-bold tracking-[0.12em] text-slate-950">OMNICART</span>
-          <span className="text-[11px] uppercase tracking-[0.26em] text-slate-500">
-            Marketplace Platform
-          </span>
         </span>
       ) : null}
     </Link>

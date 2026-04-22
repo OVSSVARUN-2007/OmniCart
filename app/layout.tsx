@@ -18,9 +18,8 @@ const bodyFont = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "OmniCart | Commerce Operating Demo",
-  description:
-    "OmniCart is a modern ecommerce demo project with premium UI, OAuth-ready authentication, JWT sessions, and executive dashboard experiences."
+  title: "OmniCart | Modern Marketplace",
+  description: "OmniCart is a modern ecommerce experience with a sharper catalog UI, category discovery, and account-ready shopping flows."
 };
 
 export default function RootLayout({

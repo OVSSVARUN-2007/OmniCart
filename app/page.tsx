@@ -3,7 +3,7 @@ import { getMarketplaceCategories, getMarketplaceProducts } from "@/lib/products
 
 export default async function HomePage() {
   const products = await getMarketplaceProducts();
-  const categories = getMarketplaceCategories();
+  const categories = await getMarketplaceCategories();
 
   return <HomeClient products={products} categories={categories} />;
 }
