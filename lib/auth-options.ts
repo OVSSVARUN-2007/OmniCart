@@ -1,18 +1,11 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
-import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 
-import { getAuthSecret, isProduction } from "@/lib/env";
+import { getAuthSecret } from "@/lib/env";
 import { prisma } from "@/lib/postgres";
 
 const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
-const microsoftEnabled = Boolean(
-  process.env.MICROSOFT_ENTRA_ID_CLIENT_ID &&
-    process.env.MICROSOFT_ENTRA_ID_CLIENT_SECRET &&
-    process.env.MICROSOFT_ENTRA_ID_TENANT_ID
-);
-
 const adapterEnabled = Boolean(process.env.DATABASE_URL);
 
 export const authOptions: NextAuthConfig = {
@@ -30,18 +23,7 @@ export const authOptions: NextAuthConfig = {
       ? [
           Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-            allowDangerousEmailAccountLinking: !isProduction()
-          })
-        ]
-      : []),
-    ...(microsoftEnabled
-      ? [
-          MicrosoftEntraID({
-            clientId: process.env.MICROSOFT_ENTRA_ID_CLIENT_ID!,
-            clientSecret: process.env.MICROSOFT_ENTRA_ID_CLIENT_SECRET!,
-            issuer: `https://login.microsoftonline.com/${process.env.MICROSOFT_ENTRA_ID_TENANT_ID}/v2.0`,
-            allowDangerousEmailAccountLinking: !isProduction()
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
           })
         ]
       : [])
@@ -52,7 +34,7 @@ export const authOptions: NextAuthConfig = {
         return false;
       }
 
-      if (account.provider === "google" || account.provider === "microsoft-entra-id") {
+      if (account.provider === "google") {
         return Boolean(profile?.email);
       }
 
@@ -90,6 +72,5 @@ export const authOptions: NextAuthConfig = {
 };
 
 export const enabledProviders = {
-  google: googleEnabled,
-  microsoft: microsoftEnabled
+  google: googleEnabled
 };

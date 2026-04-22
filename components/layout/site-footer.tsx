@@ -9,8 +9,8 @@ export function SiteFooter() {
         <div className="max-w-xl">
           <OmniCartLogo />
           <p className="mt-4 text-sm leading-6 text-slate-600">
-            OmniCart is a marketplace-style demo platform with OAuth-first authentication,
-            JWT sessions, PostgreSQL plus MongoDB architecture, and catalog ingestion from APIs.
+            OmniCart is a marketplace-style demo platform with Google OAuth authentication, JWT
+            sessions, PostgreSQL plus MongoDB architecture, and catalog ingestion from APIs.
           </p>
         </div>
         <div className="flex flex-wrap gap-4 text-sm text-slate-600">

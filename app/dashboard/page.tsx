@@ -97,8 +97,8 @@ export default async function DashboardPage() {
               <Activity className="h-5 w-5 text-blue-300" />
               <p className="font-semibold">Security note</p>
             </div>
-            <p className="mt-3 text-sm leading-7 text-slate-300">
-              No shared demo password login remains in the main auth flow. Use OAuth providers and
+              <p className="mt-3 text-sm leading-7 text-slate-300">
+              No shared demo password login remains in the main auth flow. Use Google OAuth with
               real secrets in production, plus DB migrations and HTTPS for deployment.
             </p>
           </div>
