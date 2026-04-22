@@ -3,6 +3,7 @@ import { Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { AppSessionProvider } from "@/components/providers/session-provider";
 
 import "./globals.css";
 
@@ -30,12 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${headingFont.variable} ${bodyFont.variable} bg-slate-950 text-white antialiased`}>
-        <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.12),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(244,114,182,0.14),_transparent_30%),linear-gradient(180deg,_#020617_0%,_#020617_45%,_#0f172a_100%)]">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:90px_90px] opacity-40" />
-          <SiteHeader />
-          <main className="relative z-10">{children}</main>
-          <SiteFooter />
-        </div>
+        <AppSessionProvider>
+          <div className="relative min-h-screen overflow-hidden bg-[#f5f7fb] text-slate-950">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.08),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(249,115,22,0.08),_transparent_32%)]" />
+            <SiteHeader />
+            <main className="relative z-10">{children}</main>
+            <SiteFooter />
+          </div>
+        </AppSessionProvider>
       </body>
     </html>
   );

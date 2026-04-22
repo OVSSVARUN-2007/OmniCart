@@ -1,7 +1,10 @@
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
+
+import { getAuthSecret, isProduction } from "@/lib/env";
+import { prisma } from "@/lib/postgres";
 
 const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
 const microsoftEnabled = Boolean(
@@ -10,12 +13,15 @@ const microsoftEnabled = Boolean(
     process.env.MICROSOFT_ENTRA_ID_TENANT_ID
 );
 
+const adapterEnabled = Boolean(process.env.DATABASE_URL);
+
 export const authOptions: NextAuthConfig = {
   trustHost: true,
-  secret: process.env.AUTH_SECRET,
+  secret: getAuthSecret(),
   session: {
     strategy: "jwt"
   },
+  ...(adapterEnabled ? { adapter: PrismaAdapter(prisma) } : {}),
   pages: {
     signIn: "/auth/signin"
   },
@@ -24,7 +30,8 @@ export const authOptions: NextAuthConfig = {
       ? [
           Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            allowDangerousEmailAccountLinking: !isProduction()
           })
         ]
       : []),
@@ -33,33 +40,24 @@ export const authOptions: NextAuthConfig = {
           MicrosoftEntraID({
             clientId: process.env.MICROSOFT_ENTRA_ID_CLIENT_ID!,
             clientSecret: process.env.MICROSOFT_ENTRA_ID_CLIENT_SECRET!,
-            issuer: `https://login.microsoftonline.com/${process.env.MICROSOFT_ENTRA_ID_TENANT_ID}/v2.0`
+            issuer: `https://login.microsoftonline.com/${process.env.MICROSOFT_ENTRA_ID_TENANT_ID}/v2.0`,
+            allowDangerousEmailAccountLinking: !isProduction()
           })
         ]
-      : []),
-    Credentials({
-      name: "Demo Access",
-      credentials: {
-        email: { label: "Work email", type: "email" },
-        password: { label: "Password", type: "password" }
-      },
-      async authorize(credentials) {
-        if (
-          credentials?.email === "demo@omnicart.com" &&
-          credentials?.password === "Demo@123"
-        ) {
-          return {
-            id: "demo-user",
-            name: "OmniCart Demo User",
-            email: "demo@omnicart.com"
-          };
-        }
-
-        return null;
-      }
-    })
+      : [])
   ],
   callbacks: {
+    async signIn({ account, profile }) {
+      if (!account) {
+        return false;
+      }
+
+      if (account.provider === "google" || account.provider === "microsoft-entra-id") {
+        return Boolean(profile?.email);
+      }
+
+      return false;
+    },
     async jwt({ token, account, user }) {
       if (account?.provider) {
         token.provider = account.provider;
@@ -67,6 +65,10 @@ export const authOptions: NextAuthConfig = {
 
       if (user?.email) {
         token.email = user.email;
+      }
+
+      if (user?.name) {
+        token.name = user.name;
       }
 
       return token;

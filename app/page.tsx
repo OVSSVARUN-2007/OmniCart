@@ -1,94 +1,86 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  ChartNoAxesCombined,
-  Globe,
+  BadgePercent,
+  CreditCard,
+  PackageCheck,
   ShieldCheck,
-  Sparkles,
-  Zap
+  Truck
 } from "lucide-react";
 
-import { categories, featuredProducts, heroStats, testimonials } from "@/lib/catalog";
+import { discoveryLanes, securityPillars, trustSignals } from "@/lib/catalog";
+import { getMarketplaceCategories, getMarketplaceProducts } from "@/lib/products";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = await getMarketplaceProducts();
+  const categories = getMarketplaceCategories();
+
   return (
-    <div>
-      <section className="mx-auto grid w-full max-w-7xl gap-12 px-6 pb-16 pt-14 lg:grid-cols-[1.15fr_0.85fr] lg:px-10 lg:pb-24 lg:pt-24">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-cyan-200">
-            <Sparkles className="h-4 w-4" />
-            Premium Ecommerce Demo
+    <div className="pb-8">
+      <section className="mx-auto mt-6 grid w-full max-w-7xl gap-6 px-4 lg:grid-cols-[1.35fr_0.65fr] lg:px-8">
+        <div className="overflow-hidden rounded-[36px] bg-[linear-gradient(135deg,#0f172a_0%,#1d4ed8_54%,#f97316_100%)] p-8 text-white shadow-[0_35px_90px_rgba(15,23,42,0.18)] lg:p-10">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-white/90">
+            Marketplace Demo
           </div>
-          <h1 className="mt-8 text-5xl font-semibold leading-tight text-white lg:text-7xl">
-            Commerce infrastructure with a flagship storefront feel.
+          <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight lg:text-6xl">
+            Shop, discover, and operate from a commerce UI shaped like a real marketplace.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            OmniCart is a modern ecommerce demo project designed with premium merchandising,
-            OAuth-ready sign-in, JWT session architecture, and a dashboard experience that feels
-            investor-demo ready.
+          <p className="mt-5 max-w-2xl text-base leading-8 text-white/82">
+            OmniCart now leans into a practical ecommerce layout inspired by large retail
+            marketplaces: stronger product discovery, clearer trust messaging, OAuth-first sign-in,
+            and a backend architecture prepared for real commerce systems.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/auth/signin"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
             >
-              Launch Secure Access
+              Secure Login
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="#catalog"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/5"
+              href="#deals"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              View Catalog
+              Explore Deals
             </Link>
           </div>
-          <div className="mt-14 grid gap-4 md:grid-cols-3">
-            {heroStats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-[28px] border border-white/10 bg-white/5 p-5 backdrop-blur"
-              >
-                <p className="text-3xl font-semibold text-white">{stat.value}</p>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{stat.label}</p>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-4">
+            {trustSignals.map((signal) => (
+              <div key={signal.label} className="rounded-[24px] border border-white/12 bg-white/10 p-4">
+                <p className="text-2xl font-bold">{signal.value}</p>
+                <p className="mt-2 text-sm leading-6 text-white/76">{signal.label}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="relative">
-          <div className="absolute inset-0 rounded-[36px] bg-gradient-to-br from-cyan-400/20 via-fuchsia-400/10 to-emerald-400/10 blur-3xl" />
-          <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-slate-900/80 p-6 shadow-[0_24px_120px_rgba(6,182,212,0.15)] backdrop-blur-xl">
-            <div className="flex items-center justify-between">
-              <span className="text-sm uppercase tracking-[0.3em] text-slate-400">Operations Snapshot</span>
-              <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-200">
-                Live Demo
-              </span>
-            </div>
-            <div className="mt-8 grid gap-4">
+        <div className="grid gap-6">
+          <div className="rounded-[32px] bg-[#fff7ed] p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+              Daily drop
+            </p>
+            <h2 className="mt-3 text-2xl font-bold text-slate-950">Modern components, cleaner shopping UX</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Reworked layout with brighter merchandising, more practical hierarchy, and stronger
+              call-to-action design.
+            </p>
+          </div>
+          <div className="rounded-[32px] bg-white p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600">
+              Security stack
+            </p>
+            <div className="mt-4 space-y-3">
               {[
-                {
-                  icon: Globe,
-                  title: "Multi-channel merchandising",
-                  detail: "Unified promotions and storytelling across storefront, dashboard, and campaigns."
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "JWT + OAuth architecture",
-                  detail: "Google and Microsoft providers are wired in with stateless session management."
-                },
-                {
-                  icon: ChartNoAxesCombined,
-                  title: "Executive dashboard layer",
-                  detail: "Commerce metrics, launch visibility, and modern internal UX in one secure panel."
-                }
+                "Google OAuth",
+                "Microsoft OAuth",
+                "JWT session strategy",
+                "PostgreSQL + MongoDB hybrid architecture"
               ].map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-[28px] border border-white/10 bg-white/5 p-5 transition hover:border-cyan-300/30 hover:bg-white/10"
-                >
-                  <item.icon className="h-6 w-6 text-cyan-300" />
-                  <h2 className="mt-4 text-xl font-semibold text-white">{item.title}</h2>
-                  <p className="mt-2 text-sm leading-7 text-slate-400">{item.detail}</p>
+                <div key={item} className="rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-700">
+                  {item}
                 </div>
               ))}
             </div>
@@ -96,81 +88,161 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="catalog" className="mx-auto w-full max-w-7xl px-6 py-8 lg:px-10">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.32em] text-cyan-200">Curated Commerce</p>
-            <h2 className="mt-3 text-3xl font-semibold text-white lg:text-4xl">
-              Premium product stories built for conversion.
-            </h2>
+      <section id="categories" className="mx-auto mt-6 w-full max-w-7xl px-4 lg:px-8">
+        <div className="rounded-[32px] bg-white p-6 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Browse store</p>
+              <h2 className="mt-2 text-3xl font-bold text-slate-950">Marketplace categories</h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-7 text-slate-600">
+              Category navigation is shaped to feel more like large ecommerce platforms instead of a
+              startup landing page.
+            </p>
           </div>
-          <p className="max-w-2xl text-sm leading-7 text-slate-400">
-            Use these seeded demo collections to present product quality, launch readiness, and
-            visual polish without wiring a live backend yet.
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+            {categories.map((category) => (
+              <div
+                key={category}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+              >
+                {category}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="deals" className="mx-auto mt-6 w-full max-w-7xl px-4 lg:px-8">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Featured selection</p>
+            <h2 className="mt-2 text-3xl font-bold text-slate-950">Products from API feeds and curated fallbacks</h2>
+          </div>
+          <p className="max-w-2xl text-sm leading-7 text-slate-600">
+            Product cards now support real external product images and data feeds, while falling
+            back gracefully when APIs are not available.
           </p>
         </div>
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {featuredProducts.map((product) => (
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          {products.slice(0, 8).map((product) => (
             <article
               key={product.id}
-              className="group overflow-hidden rounded-[32px] border border-white/10 bg-slate-900/70 backdrop-blur-xl"
+              className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className={`h-56 bg-gradient-to-br ${product.accent} p-6`}>
-                <div className="flex h-full flex-col justify-between rounded-[24px] border border-white/20 bg-black/10 p-5 backdrop-blur-sm">
-                  <span className="w-fit rounded-full bg-black/25 px-3 py-1 text-xs uppercase tracking-[0.28em] text-white">
-                    {product.badge}
-                  </span>
-                  <div>
-                    <p className="text-sm text-white/80">{product.category}</p>
-                    <h3 className="mt-2 text-3xl font-semibold text-white">{product.name}</h3>
-                  </div>
+              <div className={`bg-gradient-to-br ${product.accent} p-5`}>
+                <div className="relative h-56 overflow-hidden rounded-[24px] bg-white">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-5 transition duration-300 group-hover:scale-105"
+                    sizes="(max-width: 1200px) 50vw, 25vw"
+                  />
                 </div>
               </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-semibold text-white">${product.price}</span>
-                  <span className="rounded-full border border-white/10 px-3 py-1 text-sm text-slate-300">
-                    {product.rating} rating
+              <div className="space-y-3 p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    {product.badge}
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+                    {product.source}
                   </span>
                 </div>
-                <p className="mt-4 text-sm leading-7 text-slate-400">{product.description}</p>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    {product.brand}
+                  </p>
+                  <h3 className="mt-2 line-clamp-2 text-lg font-bold text-slate-950">{product.name}</h3>
+                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{product.description}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold text-slate-950">${product.price}</p>
+                    <p className="text-sm text-slate-500">{product.rating.toFixed(1)} rating</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  >
+                    View
+                  </button>
+                </div>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      <section id="capabilities" className="mx-auto grid w-full max-w-7xl gap-6 px-6 py-16 lg:grid-cols-3 lg:px-10">
-        {categories.map((category) => (
-          <div key={category.name} className="rounded-[32px] border border-white/10 bg-white/5 p-7">
-            <Zap className="h-6 w-6 text-fuchsia-300" />
-            <h3 className="mt-5 text-2xl font-semibold text-white">{category.name}</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-400">{category.summary}</p>
+      <section className="mx-auto mt-6 grid w-full max-w-7xl gap-6 px-4 lg:grid-cols-3 lg:px-8">
+        {discoveryLanes.map((lane) => (
+          <div key={lane.title} className="rounded-[28px] bg-white p-6 shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">{lane.title}</p>
+            <h3 className="mt-3 text-2xl font-bold text-slate-950">{lane.title} experiences</h3>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{lane.summary}</p>
           </div>
         ))}
       </section>
 
-      <section id="security" className="mx-auto grid w-full max-w-7xl gap-6 px-6 pb-20 lg:grid-cols-[0.9fr_1.1fr] lg:px-10">
-        <div className="rounded-[32px] border border-cyan-400/20 bg-cyan-400/10 p-8">
-          <p className="text-sm uppercase tracking-[0.3em] text-cyan-100">Security Layer</p>
-          <h2 className="mt-4 text-3xl font-semibold text-white">OAuth plus JWT, ready for Google and Microsoft.</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-200/90">
-            This project includes Google account authentication and Microsoft account
-            authentication support through Auth.js. Sessions are configured with JWT strategy for a
-            scalable stateless setup, and a demo credentials path is included so the app still
-            works locally before provider keys are connected.
-          </p>
+      <section id="security" className="mx-auto mt-6 w-full max-w-7xl px-4 lg:px-8">
+        <div className="rounded-[32px] bg-white p-6 shadow-sm lg:p-8">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Platform security</p>
+              <h2 className="mt-2 text-3xl font-bold text-slate-950">Built for stronger defaults, not just prettier screens</h2>
+            </div>
+            <div className="rounded-full bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">
+              Secure-by-default direction
+            </div>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {securityPillars.map((pillar) => (
+              <div key={pillar.title} className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                <h3 className="text-xl font-bold text-slate-950">{pillar.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{pillar.detail}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-4">
+            {[
+              { icon: ShieldCheck, label: "OAuth providers" },
+              { icon: CreditCard, label: "Transactional data in PostgreSQL" },
+              { icon: PackageCheck, label: "Catalog feed fallback resilience" },
+              { icon: Truck, label: "Marketplace-ready UI shell" }
+            ].map((item) => (
+              <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4">
+                <item.icon className="h-5 w-5 text-blue-600" />
+                <span className="text-sm font-semibold text-slate-700">{item.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {testimonials.map((item) => (
-            <figure key={item.author} className="rounded-[32px] border border-white/10 bg-white/5 p-7">
-              <blockquote className="text-lg leading-8 text-white">"{item.quote}"</blockquote>
-              <figcaption className="mt-6 text-sm text-slate-400">
-                {item.author}
-                <span className="block text-slate-500">{item.role}</span>
-              </figcaption>
-            </figure>
-          ))}
+      </section>
+
+      <section className="mx-auto mt-6 w-full max-w-7xl px-4 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-[32px] bg-[#fff7ed] p-8 shadow-sm">
+            <BadgePercent className="h-6 w-6 text-orange-600" />
+            <h2 className="mt-4 text-3xl font-bold text-slate-950">Internal demo note</h2>
+            <p className="mt-4 text-sm leading-7 text-slate-600">
+              This public UI is a demo project and not a live ecommerce business. Production
+              deployments should use real payment, inventory, order, fraud, and customer service
+              systems behind the same frontend shell.
+            </p>
+          </div>
+          <div className="rounded-[32px] bg-slate-950 p-8 text-white shadow-[0_28px_70px_rgba(15,23,42,0.18)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-200">
+              Architecture overview
+            </p>
+            <h2 className="mt-3 text-3xl font-bold">PostgreSQL for transactions, MongoDB for event streams.</h2>
+            <p className="mt-4 text-sm leading-7 text-slate-300">
+              The repo now includes Prisma schema design for PostgreSQL and a MongoDB model for
+              audit/event records so you can expand this into a more realistic multi-store commerce
+              backend.
+            </p>
+          </div>
         </div>
       </section>
     </div>

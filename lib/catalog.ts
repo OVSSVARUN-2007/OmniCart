@@ -1,12 +1,15 @@
-export type Product = {
+export type ProductRecord = {
   id: string;
   name: string;
+  brand: string;
   category: string;
   price: number;
   rating: number;
   description: string;
+  image: string;
   accent: string;
   badge: string;
+  source: "seed" | "api";
 };
 
 export type DashboardMetric = {
@@ -15,83 +18,120 @@ export type DashboardMetric = {
   change: string;
 };
 
-export const heroStats = [
-  { label: "Global shoppers reached", value: "2.4M+" },
-  { label: "Fulfillment partners", value: "180+" },
-  { label: "Average NPS uplift", value: "32%" }
+export const marketplaceCategories = [
+  "Electronics",
+  "Fashion",
+  "Home",
+  "Beauty",
+  "Appliances",
+  "Mobiles",
+  "Groceries",
+  "Travel"
 ];
 
-export const categories = [
+export const trustSignals = [
+  { label: "Orders processed", value: "1.8M+" },
+  { label: "Enterprise merchants", value: "420+" },
+  { label: "Avg. checkout latency", value: "190ms" },
+  { label: "Identity coverage", value: "Google + Microsoft" }
+];
+
+export const discoveryLanes = [
   {
-    name: "Smart Devices",
-    summary: "Connected products curated for high-conversion launches and premium bundles."
+    title: "Top deals",
+    summary: "High-velocity offers inspired by large marketplace merchandising."
   },
   {
-    name: "Workspace Design",
-    summary: "Elevated office, desk, and studio essentials tuned for hybrid teams."
+    title: "Fashion edits",
+    summary: "Editorial category grouping with stronger brand-first storytelling."
   },
   {
-    name: "Lifestyle Audio",
-    summary: "Immersive listening gear with premium positioning and subscription add-ons."
+    title: "Smart devices",
+    summary: "High-value electronics surfaced with conversion-oriented cards."
   }
 ];
 
-export const featuredProducts: Product[] = [
+export const featuredProducts: ProductRecord[] = [
   {
-    id: "pulse-x1",
+    id: "seed-headphones",
     name: "Pulse X1 Headphones",
-    category: "Lifestyle Audio",
+    brand: "Omni Audio",
+    category: "Electronics",
     price: 299,
     rating: 4.9,
-    description: "Spatial audio headset with adaptive noise control and all-day comfort tuning.",
-    accent: "from-[#ff9966] via-[#ff5e62] to-[#7d2ae8]",
-    badge: "Best Seller"
+    description: "Spatial audio headset with adaptive noise control and premium travel comfort.",
+    image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+    accent: "from-orange-50 via-white to-rose-50",
+    badge: "Best Seller",
+    source: "seed"
   },
   {
-    id: "glass-dock",
-    name: "GlassDock Pro",
-    category: "Workspace Design",
-    price: 189,
-    rating: 4.8,
-    description: "Architectural charging dock crafted for multi-device desks and studio setups.",
-    accent: "from-[#74ebd5] via-[#9face6] to-[#4f46e5]",
-    badge: "Editor's Pick"
-  },
-  {
-    id: "nova-pad",
-    name: "NovaPad Air",
-    category: "Smart Devices",
-    price: 649,
+    id: "seed-bag",
+    name: "Metro Leather Carry",
+    brand: "Northline",
+    category: "Fashion",
+    price: 159,
     rating: 4.7,
-    description: "Ultra-light productivity tablet built for design, meetings, and commerce on the move.",
-    accent: "from-[#f6d365] via-[#fda085] to-[#f43f5e]",
-    badge: "Launch Week"
+    description: "Structured day-to-night carry bag designed for professionals on the move.",
+    image: "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg",
+    accent: "from-amber-50 via-white to-yellow-50",
+    badge: "Premium Pick",
+    source: "seed"
+  },
+  {
+    id: "seed-jacket",
+    name: "Flex Motion Jacket",
+    brand: "Urban Axis",
+    category: "Fashion",
+    price: 119,
+    rating: 4.6,
+    description: "Lightweight outerwear with a tailored fit and marketplace-friendly positioning.",
+    image: "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+    accent: "from-slate-100 via-white to-zinc-100",
+    badge: "Trending",
+    source: "seed"
+  },
+  {
+    id: "seed-monitor",
+    name: "VisionHub Display",
+    brand: "GlassDock",
+    category: "Electronics",
+    price: 429,
+    rating: 4.8,
+    description: "Ultra-clean productivity display for command centers and design desks.",
+    image: "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
+    accent: "from-sky-50 via-white to-cyan-50",
+    badge: "Editor's Pick",
+    source: "seed"
   }
 ];
 
 export const dashboardMetrics: DashboardMetric[] = [
-  { label: "Gross revenue", value: "$184.2K", change: "+14.8% vs last month" },
-  { label: "Returning users", value: "68%", change: "+9.2% retention lift" },
-  { label: "Conversion rate", value: "5.42%", change: "+1.1% optimization gain" }
+  { label: "Gross merchandise value", value: "$2.48M", change: "+18.4% month over month" },
+  { label: "Authenticated customers", value: "84.3K", change: "+11.2% verified identity growth" },
+  { label: "Checkout success rate", value: "98.9%", change: "+0.7% after session hardening" },
+  { label: "Catalog ingestion", value: "API + DB", change: "Hybrid feed with fallback resilience" }
 ];
 
 export const dashboardActivities = [
-  "Google OAuth sign-ins enabled for consumer identities.",
-  "Microsoft account sign-ins enabled for work and school users.",
-  "JWT sessions configured for scalable stateless authentication.",
-  "Demo merchandising feed seeded for storefront previews.",
-  "Executive dashboard callout added to distinguish demo and production use."
+  "OAuth-only identity path prepared for Google and Microsoft sign-in.",
+  "PostgreSQL schema added for users, accounts, products, and orders.",
+  "MongoDB audit-log layer added for event and activity retention.",
+  "Security middleware ships baseline headers and CSP policy.",
+  "Marketplace catalog can hydrate from product APIs with local fallback."
 ];
 
-export const testimonials = [
+export const securityPillars = [
   {
-    quote: "OmniCart feels like the kind of commerce platform a funded product team would actually ship.",
-    author: "Aarav Patel",
-    role: "Product Lead, Vertex Retail"
+    title: "OAuth-first identity",
+    detail: "Google and Microsoft providers handle end-user login while Auth.js manages secure callbacks and JWT sessions."
   },
   {
-    quote: "The UI quality, information hierarchy, and dashboard polish make it presentation-ready.",
-    author: "Maya Johnson",
-    role: "Design Director, Northline Studio"
+    title: "Hybrid persistence",
+    detail: "PostgreSQL is prepared for transactional commerce data; MongoDB is prepared for event-oriented logs and operational telemetry."
+  },
+  {
+    title: "Secure-by-default headers",
+    detail: "Content Security Policy, frame denial, strict referrer handling, and content sniffing protections are added at the middleware layer."
   }
 ];
