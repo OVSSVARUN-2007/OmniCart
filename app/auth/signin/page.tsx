@@ -35,7 +35,10 @@ export default async function SignInPage() {
       <section className="rounded-[32px] border border-slate-200 bg-[#fbfcfe] p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)] lg:p-10">
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Welcome back</p>
-          <h2 className="mt-3 text-3xl font-bold text-slate-950">Continue with Google</h2>
+          <h2 className="mt-3 text-3xl font-bold text-slate-950">Sign in with email</h2>
+          <p className="mt-3 text-sm leading-7 text-slate-600">
+            Use your email and password first, or choose Google below.
+          </p>
         </div>
 
         <AuthActions googleEnabled={enabledProviders.google} mode="signin" />
@@ -44,6 +47,7 @@ export default async function SignInPage() {
           <p className="text-sm font-semibold text-slate-950">Need a new account?</p>
           <Link
             href="/auth/signup"
+            prefetch={false}
             className="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
           >
             Create account

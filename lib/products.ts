@@ -1,49 +1,6 @@
-import { z } from "zod";
-
 import { featuredProducts, marketplaceCategories, type ProductRecord } from "@/lib/catalog";
 import { prisma } from "@/lib/postgres";
-
-const fakeStoreSchema = z.array(
-  z.object({
-    id: z.number(),
-    title: z.string(),
-    price: z.number(),
-    description: z.string(),
-    category: z.string(),
-    image: z.string().url(),
-    rating: z
-      .object({
-        rate: z.number()
-      })
-      .optional()
-  })
-);
-
-const dummyJsonSchema = z.object({
-  products: z.array(
-    z.object({
-      id: z.number(),
-      title: z.string(),
-      price: z.number(),
-      description: z.string(),
-      category: z.string(),
-      thumbnail: z.string().url(),
-      rating: z.number()
-    })
-  )
-});
-
-const fakeStoreCategoriesSchema = z.array(z.string());
-const dummyJsonCategoriesSchema = z.union([
-  z.array(z.string()),
-  z.array(
-    z.object({
-      slug: z.string().optional(),
-      name: z.string().optional(),
-      url: z.string().optional()
-    })
-  )
-]);
+import { z } from "zod";
 
 const productInputSchema = z.object({
   name: z.string().min(2),
@@ -154,95 +111,6 @@ async function getDatabaseProducts() {
   }
 }
 
-async function getExternalProducts() {
-  try {
-    const [fakeStoreResponse, dummyJsonResponse] = await Promise.all([
-      fetch("https://fakestoreapi.com/products?limit=8", {
-        next: { revalidate: 3600 }
-      }),
-      fetch("https://dummyjson.com/products?limit=8&select=title,price,description,category,thumbnail,rating", {
-        next: { revalidate: 3600 }
-      })
-    ]);
-
-    if (!fakeStoreResponse.ok || !dummyJsonResponse.ok) {
-      throw new Error("External product APIs unavailable");
-    }
-
-    const fakeStoreJson = fakeStoreSchema.parse(await fakeStoreResponse.json());
-    const dummyJson = dummyJsonSchema.parse(await dummyJsonResponse.json());
-
-    return [
-      ...fakeStoreJson.map((item) =>
-        normalizeRecord({
-          id: `fs-${item.id}`,
-          slug: `fake-store-${item.id}`,
-          name: item.title,
-          category: normalizeCategoryName(item.category),
-          price: item.price,
-          rating: item.rating?.rate ?? 4.7,
-          description: item.description,
-          image: item.image,
-          inventory: 50,
-          badge: "API Feed",
-          brand: "Fake Store",
-          accent: "from-amber-100 via-white to-orange-100",
-          source: "api"
-        })
-      ),
-      ...dummyJson.products.map((item) =>
-        normalizeRecord({
-          id: `dj-${item.id}`,
-          slug: `dummy-json-${item.id}`,
-          name: item.title,
-          category: normalizeCategoryName(item.category),
-          price: item.price,
-          rating: item.rating,
-          description: item.description,
-          image: item.thumbnail,
-          inventory: 35,
-          badge: "Trending API",
-          brand: "DummyJSON",
-          accent: "from-sky-100 via-white to-cyan-100",
-          source: "api"
-        })
-      )
-    ];
-  } catch {
-    return [];
-  }
-}
-
-async function getExternalCategories() {
-  try {
-    const [fakeStoreResponse, dummyJsonResponse] = await Promise.all([
-      fetch("https://fakestoreapi.com/products/categories", {
-        next: { revalidate: 3600 }
-      }),
-      fetch("https://dummyjson.com/products/categories", {
-        next: { revalidate: 3600 }
-      })
-    ]);
-
-    if (!fakeStoreResponse.ok || !dummyJsonResponse.ok) {
-      throw new Error("External category APIs unavailable");
-    }
-
-    const fakeStoreCategories = fakeStoreCategoriesSchema.parse(await fakeStoreResponse.json());
-    const dummyJsonCategories = dummyJsonCategoriesSchema.parse(await dummyJsonResponse.json());
-
-    const normalizedDummyJsonCategories = dummyJsonCategories.map((entry) =>
-      typeof entry === "string" ? entry : entry.name ?? entry.slug ?? ""
-    );
-
-    return [...fakeStoreCategories, ...normalizedDummyJsonCategories]
-      .filter(Boolean)
-      .map(normalizeCategoryName);
-  } catch {
-    return [];
-  }
-}
-
 export async function getMarketplaceProducts(filters: ProductFilters = {}): Promise<ProductRecord[]> {
   const databaseProducts = await getDatabaseProducts();
 
@@ -250,10 +118,7 @@ export async function getMarketplaceProducts(filters: ProductFilters = {}): Prom
     return applyFilters(databaseProducts, filters);
   }
 
-  const externalProducts = await getExternalProducts();
-  const sourceProducts = externalProducts.length > 0 ? externalProducts : featuredProducts;
-
-  return applyFilters(sourceProducts, filters);
+  return applyFilters(featuredProducts, filters);
 }
 
 export async function getMarketplaceCategories() {
@@ -261,7 +126,7 @@ export async function getMarketplaceCategories() {
   const categorySource =
     databaseProducts.length > 0
       ? databaseProducts.map((product) => product.category)
-      : await getExternalCategories();
+      : featuredProducts.map((product) => normalizeCategoryName(product.category));
   const categorySet = new Set([...marketplaceCategories, ...categorySource]);
 
   return Array.from(categorySet).sort((left, right) => left.localeCompare(right));

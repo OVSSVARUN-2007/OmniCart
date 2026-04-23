@@ -12,7 +12,7 @@ export function OmniCartLogo({
   withWordmark = true
 }: OmniCartLogoProps) {
   return (
-    <Link href="/" className={cn("inline-flex items-center gap-3", className)}>
+    <Link href="/" prefetch={false} className={cn("inline-flex items-center gap-3", className)}>
       <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#111827,#1d4ed8,#f97316)] shadow-[0_12px_30px_rgba(37,99,235,0.18)]">
         <svg aria-hidden="true" viewBox="0 0 64 64" className="h-7 w-7" fill="none">
           <path
